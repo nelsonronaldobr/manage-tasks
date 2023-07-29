@@ -19,7 +19,13 @@ export const Layout: FC<Props> = ({ title = 'ManageTasks', children }) => {
             </Head>
             <Navbar />
             <Sidebar />
-            <Container maxWidth={'lg'}>{children}</Container>
+            <Container
+                maxWidth={'xl'}
+                sx={{
+                    py: 2
+                }}>
+                {children}
+            </Container>
         </Box>
     );
 };

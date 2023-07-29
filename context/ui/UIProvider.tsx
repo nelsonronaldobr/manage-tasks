@@ -1,12 +1,18 @@
 import { FC, ReactNode, useReducer } from 'react';
 import { UIContext } from './';
-import { UIstate, doToggleSidebar, uiReducer } from './reducer';
+import {
+    UIstate,
+    doToggleAddingEntry,
+    doToggleSidebar,
+    uiReducer
+} from './reducer';
 
 interface Props {
     children: ReactNode | JSX.Element[] | JSX.Element;
 }
 const UI_INITAL_STATE: UIstate = {
-    sideMenuOpen: false
+    sideMenuOpen: false,
+    isAdding: false
 };
 
 export const UIProvider: FC<Props> = ({ children }) => {
@@ -16,11 +22,18 @@ export const UIProvider: FC<Props> = ({ children }) => {
         dispatch(doToggleSidebar());
     };
 
+    const toggleAddingEntry = () => {
+        console.log(state.isAdding);
+
+        dispatch(doToggleAddingEntry());
+    };
+
     return (
         <UIContext.Provider
             value={{
                 ...state,
-                toggleSidebar
+                toggleSidebar,
+                toggleAddingEntry
             }}>
             {children}
         </UIContext.Provider>
