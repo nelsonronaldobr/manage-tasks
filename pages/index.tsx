@@ -1,10 +1,12 @@
+import { Typography } from '@mui/material';
 import type { NextPage } from 'next';
+import { Layout } from '../components/layouts';
 
 const HomePage: NextPage = () => {
     return (
-        <div>
-            <h1>hola mundo</h1>
-        </div>
+        <Layout>
+            <Typography>hola</Typography>
+        </Layout>
     );
 };
 
