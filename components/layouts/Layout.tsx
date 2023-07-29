@@ -1,7 +1,8 @@
 import { Box, Container } from '@mui/material';
 import Head from 'next/head';
 import { FC, ReactNode } from 'react';
-import { Navbar, Sidebar } from '../ui';
+import { Alert, Navbar, Sidebar } from '../ui';
+import { Dialog } from '../ui/Dialog';
 
 interface Props {
     title?: string;
@@ -10,22 +11,26 @@ interface Props {
 
 export const Layout: FC<Props> = ({ title = 'ManageTasks', children }) => {
     return (
-        <Box
-            sx={{
-                flexFlow: 1
-            }}>
-            <Head>
-                <title>{title}</title>
-            </Head>
-            <Navbar />
-            <Sidebar />
-            <Container
-                maxWidth={'xl'}
+        <>
+            <Box
                 sx={{
-                    py: 2
+                    flexFlow: 1
                 }}>
-                {children}
-            </Container>
-        </Box>
+                <Head>
+                    <title>{title}</title>
+                </Head>
+                <Navbar />
+                <Sidebar />
+                <Alert />
+                <Container
+                    maxWidth={'xl'}
+                    sx={{
+                        py: 2
+                    }}>
+                    {children}
+                </Container>
+            </Box>
+            <Dialog />
+        </>
     );
 };

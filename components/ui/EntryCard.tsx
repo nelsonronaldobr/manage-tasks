@@ -14,7 +14,10 @@ interface Props {
 
 export const EntryCard: FC<Props> = ({ entry }) => {
     return (
-        <Card sx={{ marginBottom: 1 }}>
+        <Card
+            draggable
+            sx={{ marginBottom: 1 }}
+            className='animate__animated animate__fadeIn'>
             <CardActionArea>
                 <CardContent>
                     <Typography sx={{ whiteSpace: 'pre-line' }}>

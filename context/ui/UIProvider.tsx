@@ -1,7 +1,10 @@
 import { FC, ReactNode, useReducer } from 'react';
 import { UIContext } from './';
 import {
+    Alert,
     UIstate,
+    doCloseAlert,
+    doShowAlert,
     doToggleAddingEntry,
     doToggleSidebar,
     uiReducer
@@ -12,7 +15,8 @@ interface Props {
 }
 const UI_INITAL_STATE: UIstate = {
     sideMenuOpen: false,
-    isAdding: false
+    isAdding: false,
+    alert: { open: false } as Alert
 };
 
 export const UIProvider: FC<Props> = ({ children }) => {
@@ -23,9 +27,15 @@ export const UIProvider: FC<Props> = ({ children }) => {
     };
 
     const toggleAddingEntry = () => {
-        console.log(state.isAdding);
-
         dispatch(doToggleAddingEntry());
+    };
+
+    const showALert = ({ text, type }: Alert) => {
+        dispatch(doShowAlert({ text, type }));
+    };
+
+    const closeAlert = () => {
+        dispatch(doCloseAlert());
     };
 
     return (
@@ -33,7 +43,9 @@ export const UIProvider: FC<Props> = ({ children }) => {
             value={{
                 ...state,
                 toggleSidebar,
-                toggleAddingEntry
+                toggleAddingEntry,
+                closeAlert,
+                showALert
             }}>
             {children}
         </UIContext.Provider>

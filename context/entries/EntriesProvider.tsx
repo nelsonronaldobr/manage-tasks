@@ -1,6 +1,6 @@
 import { FC, ReactNode, useReducer } from 'react';
 import { EntriesContext } from './';
-import { EntriesState, entriesReducer } from './reducer';
+import { EntriesState, Entry, doAddEntry, entriesReducer } from './reducer';
 import { v4 as uuid } from 'uuid';
 
 interface Props {
@@ -32,10 +32,21 @@ const ENTRIES_INITAL_STATE: EntriesState = {
 export const EntriesProvider: FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITAL_STATE);
 
+    const addEntry = (description: string) => {
+        const entry: Entry = {
+            _id: uuid(),
+            description,
+            status: 'pending',
+            createdAd: Date.now()
+        };
+        dispatch(doAddEntry(entry));
+    };
+
     return (
         <EntriesContext.Provider
             value={{
-                ...state
+                ...state,
+                addEntry
             }}>
             {children}
         </EntriesContext.Provider>

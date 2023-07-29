@@ -1,3 +1,4 @@
+export * from './Alert';
 export * from './EntryCard';
 export * from './EntryList';
 export * from './Navbar';
