@@ -2,6 +2,7 @@ export interface UIstate {
     sideMenuOpen: boolean;
     isAdding: boolean;
     alert: Alert;
+    isDragging: boolean;
 }
 export interface Alert {
     type: AlertType;

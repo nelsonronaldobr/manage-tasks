@@ -4,7 +4,9 @@ import {
     Alert,
     UIstate,
     doCloseAlert,
+    doEndDragging,
     doShowAlert,
+    doStartDragging,
     doToggleAddingEntry,
     doToggleSidebar,
     uiReducer
@@ -16,7 +18,8 @@ interface Props {
 const UI_INITAL_STATE: UIstate = {
     sideMenuOpen: false,
     isAdding: false,
-    alert: { open: false } as Alert
+    alert: { open: false } as Alert,
+    isDragging: false
 };
 
 export const UIProvider: FC<Props> = ({ children }) => {
@@ -38,6 +41,13 @@ export const UIProvider: FC<Props> = ({ children }) => {
         dispatch(doCloseAlert());
     };
 
+    const endDragging = () => {
+        dispatch(doEndDragging());
+    };
+    const startDragging = () => {
+        dispatch(doStartDragging());
+    };
+
     return (
         <UIContext.Provider
             value={{
@@ -45,7 +55,9 @@ export const UIProvider: FC<Props> = ({ children }) => {
                 toggleSidebar,
                 toggleAddingEntry,
                 closeAlert,
-                showALert
+                showALert,
+                startDragging,
+                endDragging
             }}>
             {children}
         </UIContext.Provider>

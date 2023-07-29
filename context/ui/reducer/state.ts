@@ -30,6 +30,16 @@ export const uiReducer = (state: UIstate, action: UIAction): UIstate => {
                     open: false
                 }
             };
+        case 'UI - End Dragging':
+            return {
+                ...state,
+                isDragging: false
+            };
+        case 'UI - Start Dragging':
+            return {
+                ...state,
+                isDragging: true
+            };
         default:
             return state;
     }

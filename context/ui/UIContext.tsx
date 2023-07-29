@@ -9,6 +9,9 @@ export interface ContextProps {
     alert: Alert;
     showALert: (alert: Alert) => void;
     closeAlert: () => void;
+    isDragging: boolean;
+    endDragging: () => void;
+    startDragging: () => void;
 }
 
 export const UIContext = createContext({} as ContextProps);
