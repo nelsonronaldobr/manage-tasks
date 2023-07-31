@@ -1,5 +1,5 @@
 import { UIAction } from './actions';
-import { UIstate } from './ui';
+import { Alert, UIstate } from './ui';
 
 export const uiReducer = (state: UIstate, action: UIAction): UIstate => {
     switch (action.type) {
@@ -7,6 +7,38 @@ export const uiReducer = (state: UIstate, action: UIAction): UIstate => {
             return {
                 ...state,
                 sideMenuOpen: !state.sideMenuOpen
+            };
+        case 'UI - Toggle Adding Entry':
+            return {
+                ...state,
+                isAdding: !state.isAdding
+            };
+        case 'UI - Show Alert':
+            return {
+                ...state,
+                alert: {
+                    open: true,
+                    text: action.payload.text,
+                    type: action.payload.type
+                }
+            };
+        case 'UI - Close Alert':
+            return {
+                ...state,
+                alert: {
+                    ...state.alert,
+                    open: false
+                }
+            };
+        case 'UI - End Dragging':
+            return {
+                ...state,
+                isDragging: false
+            };
+        case 'UI - Start Dragging':
+            return {
+                ...state,
+                isDragging: true
             };
         default:
             return state;
