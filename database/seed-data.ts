@@ -5,7 +5,7 @@ interface SeedData {
 interface SeedEntry {
     description: string;
     status: string;
-    createdAd: number;
+    createdAt: number;
 }
 
 export const seedData: SeedData = {
@@ -13,17 +13,17 @@ export const seedData: SeedData = {
         {
             description: 'Pendiente : Lorem Lorem Lorem Lorem Lorem',
             status: 'pending',
-            createdAd: Date.now()
+            createdAt: Date.now()
         },
         {
             description: 'En Progreso : Lorem Lorem Lorem Lorem Lorem',
             status: 'in-progress',
-            createdAd: Date.now() - 1000000
+            createdAt: Date.now() - 1000000
         },
         {
             description: 'Finalizado : Lorem Lorem Lorem Lorem Lorem',
             status: 'finished',
-            createdAd: Date.now() - 100000
+            createdAt: Date.now() - 100000
         }
     ]
 };

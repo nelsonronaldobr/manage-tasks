@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 export const Dialog = () => {
-    const { isAdding, toggleAddingEntry, showALert } = useUI();
+    const { isAdding, toggleAddingEntry } = useUI();
     const { addEntry } = useEntries();
     const [inputValue, setInputValue] = useState('');
     const [touched, setTouched] = useState(false);
@@ -41,7 +41,6 @@ export const Dialog = () => {
         addEntry(inputValue);
         setInputValue('');
         toggleAddingEntry();
-        showALert({ text: 'Tarea creada con Éxito', type: 'success' });
     };
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));

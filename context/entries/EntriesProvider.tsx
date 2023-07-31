@@ -8,8 +8,8 @@ import {
     doUpdateEntry,
     entriesReducer
 } from './reducer';
-import { v4 as uuid } from 'uuid';
 import { entriesApi } from '../../api';
+import { useUI } from '../../hooks';
 
 interface Props {
     children: ReactNode | JSX.Element[] | JSX.Element;
@@ -21,18 +21,47 @@ const ENTRIES_INITAL_STATE: EntriesState = {
 export const EntriesProvider: FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITAL_STATE);
 
-    const addEntry = (description: string) => {
-        const entry: Entry = {
-            _id: uuid(),
-            description,
-            status: 'pending',
-            createdAd: Date.now()
-        };
-        dispatch(doAddEntry(entry));
+    const { showALert } = useUI();
+
+    const addEntry = async (description: string) => {
+        try {
+            const { data } = await entriesApi.post<Entry>('/entries', {
+                description
+            });
+            dispatch(doAddEntry(data));
+            showALert({
+                text: `Tarea ${data._id} creada con Éxito`,
+                type: 'success'
+            });
+        } catch (error) {
+            console.log(error);
+
+            showALert({
+                text: 'ERROR : Comunicate con el administrador',
+                type: 'error'
+            });
+        }
     };
 
-    const updateEntry = (entry: Entry) => {
-        dispatch(doUpdateEntry(entry));
+    const updateEntry = async ({ description, _id, status }: Entry) => {
+        try {
+            const { data } = await entriesApi.put<Entry>(`/entries/${_id}`, {
+                description,
+                status
+            });
+            dispatch(doUpdateEntry(data));
+            showALert({
+                text: `Tarea ${_id} actualizada con Éxito`,
+                type: 'success'
+            });
+        } catch (error: any) {
+            console.log(error.response.data.message);
+
+            showALert({
+                text: `ERROR : ${error.response.data.message}`,
+                type: 'error'
+            });
+        }
     };
 
     const refreshEntries = async () => {
