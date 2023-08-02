@@ -22,6 +22,11 @@ export const entriesReducer = (
                     return entry;
                 })
             };
+        case 'Entry - Refresh Data':
+            return {
+                ...state,
+                entries: [...payload]
+            };
         default:
             return state;
     }
