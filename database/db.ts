@@ -14,10 +14,7 @@ const mongooConnection = {
 const { MONGO_URL = '', NODE_ENV } = getEnvVariables.server();
 
 export const connect = async () => {
-    if (mongooConnection.isConnected) {
-        console.log('ya esta conectado');
-        return;
-    }
+    if (mongooConnection.isConnected) return;
 
     if (mongoose.connections.length > 0) {
         mongooConnection.isConnected = mongoose.connections[0].readyState;

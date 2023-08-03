@@ -4,12 +4,13 @@ import {
     EntriesState,
     Entry,
     doAddEntry,
+    doDeleteEntry,
     doRefreshData,
     doUpdateEntry,
     entriesReducer
 } from './reducer';
 import { entriesApi } from '../../api';
-import { useUI } from '../../hooks';
+import { useSnackbar } from 'notistack';
 
 interface Props {
     children: ReactNode | JSX.Element[] | JSX.Element;
@@ -20,8 +21,8 @@ const ENTRIES_INITAL_STATE: EntriesState = {
 
 export const EntriesProvider: FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITAL_STATE);
-
-    const { showALert } = useUI();
+    /* const { showALert } = useUI(); */
+    const { enqueueSnackbar } = useSnackbar();
 
     const addEntry = async (description: string) => {
         try {
@@ -29,16 +30,30 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
                 description
             });
             dispatch(doAddEntry(data));
-            showALert({
+            /* showALert({
                 text: `Tarea ${data._id} creada con Éxito`,
                 type: 'success'
+            }); */
+            enqueueSnackbar(`Tarea ${data._id} creada con Éxito`, {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
+                autoHideDuration: 1500
             });
         } catch (error) {
-            console.log(error);
-
-            showALert({
+            /* showALert({
                 text: 'ERROR : Comunicate con el administrador',
                 type: 'error'
+            }); */
+            enqueueSnackbar('ERROR : Comunicate con el administrador', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
+                autoHideDuration: 1500
             });
         }
     };
@@ -50,16 +65,62 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
                 status
             });
             dispatch(doUpdateEntry(data));
-            showALert({
+            /* showALert({
                 text: `Tarea ${_id} actualizada con Éxito`,
                 type: 'success'
+            }); */
+            enqueueSnackbar(`Tarea ${data._id} actualizada con Éxito`, {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
+                autoHideDuration: 1500
             });
         } catch (error: any) {
-            console.log(error.response.data.message);
-
-            showALert({
+            /* showALert({
                 text: `ERROR : ${error.response.data.message}`,
                 type: 'error'
+            }); */
+            enqueueSnackbar(`ERROR : ${error.response.data.message}`, {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
+                autoHideDuration: 1500
+            });
+        }
+    };
+
+    const deleteEntry = async ({ _id }: Entry) => {
+        try {
+            const { data } = await entriesApi.delete<Entry>(`/entries/${_id}`);
+            dispatch(doDeleteEntry(data));
+            /* showALert({
+                text: `Tarea ${_id} actualizada con Éxito`,
+                type: 'success'
+            }); */
+            enqueueSnackbar(`Tarea ${data._id} eliminada con Éxito`, {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
+                autoHideDuration: 1500
+            });
+        } catch (error: any) {
+            /* showALert({
+                text: `ERROR : ${error.response.data.message}`,
+                type: 'error'
+            }); */
+            enqueueSnackbar(`ERROR : ${error.response.data.message}`, {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
+                autoHideDuration: 1500
             });
         }
     };
@@ -78,7 +139,8 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
             value={{
                 ...state,
                 addEntry,
-                updateEntry
+                updateEntry,
+                deleteEntry
             }}>
             {children}
         </EntriesContext.Provider>

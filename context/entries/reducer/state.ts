@@ -22,6 +22,13 @@ export const entriesReducer = (
                     return entry;
                 })
             };
+        case 'Entry - Delete Entry':
+            return {
+                ...state,
+                entries: state.entries.filter(
+                    (entry) => entry._id !== payload._id
+                )
+            };
         case 'Entry - Refresh Data':
             return {
                 ...state,

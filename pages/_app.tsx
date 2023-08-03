@@ -5,17 +5,40 @@ import { CssBaseline } from '@mui/material';
 import { darkTheme, lightTheme } from '../themes';
 import { UIProvider } from '../context/ui';
 import { EntriesProvider } from '../context/entries';
+import NextNProgress from 'nextjs-progressbar';
+import { SnackbarProvider } from 'notistack';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <UIProvider>
-            <EntriesProvider>
-                <ThemeProvider theme={darkTheme}>
-                    <CssBaseline />
-                    <Component {...pageProps} />
-                </ThemeProvider>
-            </EntriesProvider>
-        </UIProvider>
+        <>
+            <NextNProgress
+                color={''}
+                options={{
+                    showSpinner: false
+                }}
+                showOnShallow={false}
+                height={4}
+                transformCSS={(defaultCSS) => {
+                    const customCSS = `
+                    .bar {
+                        background: rgb(48, 48, 48);
+                        background: linear-gradient(178.6deg, rgb(20, 36, 50) 11.8%, rgb(124, 143, 161) 83.8%);
+                    }
+                    `;
+                    return <style>{defaultCSS + customCSS}</style>;
+                }}
+            />
+            <SnackbarProvider maxSnack={1}>
+                <UIProvider>
+                    <EntriesProvider>
+                        <ThemeProvider theme={darkTheme}>
+                            <CssBaseline />
+                            <Component {...pageProps} />
+                        </ThemeProvider>
+                    </EntriesProvider>
+                </UIProvider>
+            </SnackbarProvider>
+        </>
     );
 }
 
