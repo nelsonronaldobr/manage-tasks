@@ -8,3 +8,7 @@
     background: #e1e1e1;
     border-radius: 4px;
 }
+
+* {
+    user-select: none;
+}

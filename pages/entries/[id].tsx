@@ -16,16 +16,23 @@ import {
 } from '@mui/material';
 import { Layout } from '../../components/layouts';
 import { grey } from '@mui/material/colors';
-import { EntryStatus } from '../../context/entries';
+import { Entry, EntryStatus } from '../../context/entries';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { isValidObjectId } from 'mongoose';
+import { entriesApi } from '../../api';
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
-const EntryPage = () => {
-    const [inputValue, setInputValue] = useState('');
-    const [status, setStatus] = useState<EntryStatus>('pending');
+interface Props {
+    entry: Entry;
+}
+
+const EntryPage: FC<Props> = ({ entry }) => {
+    const [inputValue, setInputValue] = useState(entry.description);
+    const [status, setStatus] = useState<EntryStatus>(entry.status);
     const [touched, setTouched] = useState(false);
 
     const router = useRouter();
@@ -45,7 +52,7 @@ const EntryPage = () => {
 
     const onCancel = () => {
         setTouched(false);
-        router.push('/');
+        router.replace('/');
     };
 
     const onStatusChanged = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +90,6 @@ const EntryPage = () => {
                                 value={inputValue}
                                 helperText={isNotValid && 'Ingresa un valor'}
                                 fullWidth
-                                onBlur={onTouchChanged}
                                 error={isNotValid}
                                 sx={{
                                     marginTop: 2,
@@ -145,6 +151,31 @@ const EntryPage = () => {
             </IconButton>
         </Layout>
     );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    //const { data } = await  // your fetch function here
+    const { id } = params as { id: string };
+    console.log({ id });
+
+    const { data: entry } = await entriesApi<Entry>(`/entries/${id}`);
+
+    if (!entry) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
+
+    return {
+        props: {
+            entry
+        }
+    };
 };
 
 export default EntryPage;
