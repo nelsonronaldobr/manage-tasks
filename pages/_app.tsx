@@ -6,6 +6,7 @@ import { darkTheme, lightTheme } from '../themes';
 import { UIProvider } from '../context/ui';
 import { EntriesProvider } from '../context/entries';
 import NextNProgress from 'nextjs-progressbar';
+import { SnackbarProvider } from 'notistack';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -27,14 +28,16 @@ function MyApp({ Component, pageProps }: AppProps) {
                     return <style>{defaultCSS + customCSS}</style>;
                 }}
             />
-            <UIProvider>
-                <EntriesProvider>
-                    <ThemeProvider theme={darkTheme}>
-                        <CssBaseline />
-                        <Component {...pageProps} />
-                    </ThemeProvider>
-                </EntriesProvider>
-            </UIProvider>
+            <SnackbarProvider maxSnack={1}>
+                <UIProvider>
+                    <EntriesProvider>
+                        <ThemeProvider theme={darkTheme}>
+                            <CssBaseline />
+                            <Component {...pageProps} />
+                        </ThemeProvider>
+                    </EntriesProvider>
+                </UIProvider>
+            </SnackbarProvider>
         </>
     );
 }

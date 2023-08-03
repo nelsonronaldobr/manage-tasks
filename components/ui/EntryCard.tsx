@@ -9,6 +9,7 @@ import { Entry } from '../../context/entries';
 import { DragEvent, FC, MouseEvent } from 'react';
 import { useUI } from '../../hooks';
 import { useRouter } from 'next/router';
+import { dateFunctions } from '../../helpers';
 
 interface Props {
     entry: Entry;
@@ -52,7 +53,10 @@ export const EntryCard: FC<Props> = ({ entry }) => {
                         justifyContent: 'end',
                         paddingRight: 2
                     }}>
-                    <Typography variant='body2'>hace 30 min</Typography>
+                    <Typography variant='body2'>
+                        hace {''}
+                        {dateFunctions.getFormatDistanceToNow(entry.createdAt)}
+                    </Typography>
                 </CardActions>
             </CardActionArea>
         </Card>

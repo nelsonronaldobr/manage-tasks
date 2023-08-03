@@ -38,7 +38,6 @@ export const postEntry = async (
         //await db.disconnect();
         return res.status(201).json(createEntry);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             message: 'Alguien salio mal, revisar consola del servidor'
         });

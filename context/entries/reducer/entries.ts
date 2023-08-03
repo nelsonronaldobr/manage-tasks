@@ -5,8 +5,8 @@ export interface EntriesState {
 export interface Entry {
     _id: string;
     description: string;
-    createdAt: number;
-    updatedAt: number;
+    createdAt: string;
+    updatedAt: string;
     status: EntryStatus;
 }
 
